@@ -85,7 +85,7 @@ def make_csv(filename,
                 end_time = start_time + timedelta(minutes=random.randint(1, 30))
                 isbn = random.choice(isbns)
                 writer.writerow({
-                    'company': company,
+                    'company': perturb(company, 0.1),
                     'isbn': isbn,
                     'start_time': start_time,
                     'end_time': end_time
