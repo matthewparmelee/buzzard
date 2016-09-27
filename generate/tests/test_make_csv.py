@@ -1,6 +1,9 @@
-import pytest
+from datetime import datetime
+
+import pytz
 
 from generate import make_csv
+
 
 def test_get_companies():
     companies = make_csv.get_companies(10)
@@ -18,9 +21,18 @@ def test_perturb():
         perturbed = make_csv.perturb(original, .5)
         diff_count += int(perturbed == original)
 
-    assert 400 <= diff_count
-    assert diff_count <= 600
+    assert 400 <= diff_count <= 600
+
+
+def test_get_isbns():
+    assert 100 == len(make_csv.get_isbns())
 
 
 def test_get_datetimes_between():
-    pass
+    start = datetime(2016, 1, 1, tzinfo=pytz.utc)
+    end = datetime(2016, 1, 31, tzinfo=pytz.utc)
+    datetimes = make_csv.get_datetimes_between(start, end)
+    assert 100 == len(datetimes)
+
+    for dt in datetimes:
+        assert start <= dt <= end
