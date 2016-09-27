@@ -85,7 +85,7 @@ def make_csv(filename,
                 end_time = start_time + timedelta(minutes=random.randint(1, 30))
                 isbn = random.choice(isbns)
                 writer.writerow({
-                    'company': perturb(company, 0.1),
+                    'company': perturb(company, 0.01),
                     'isbn': isbn,
                     'start_time': start_time,
                     'end_time': end_time
@@ -97,18 +97,17 @@ if __name__ == '__main__':
         'Generates a CSV of fake usage sessions '
         'for fake companies (over real ISBNs)'))
     parser.add_argument('filename', help='The name of the CSV to generate')
-    parser.add_argument('--number-companies',
+    parser.add_argument('--number-companies', type=int, default=25,
                         help='The number of fake companies to generate usage data for')
-    parser.add_argument('--number-isbns',
+    parser.add_argument('--number-isbns', type=int, default=25,
                         help='The number of ISBNs to use')
-    parser.add_argument('--records-per-account',
+    parser.add_argument('--records-per-account', type=int, default=100,
                         help='The number of records to generate for each company')
     args = parser.parse_args()
 
     kwargs = {}
     for option in ('number_companies', 'number_isbns', 'records_per_account'):
         if getattr(args, option):
-            kwargs[option] = int(getattr(args, option))
+            kwargs[option] = getattr(args, option)
 
-    print(kwargs)
     make_csv(args.filename, **kwargs)
